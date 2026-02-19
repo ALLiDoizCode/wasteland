@@ -38,7 +38,7 @@ interface ThroughputStats {
   totalEvents: number;
 }
 
-const RELAY_URL = process.env.RELAY_URL || 'ws://localhost:7001';
+const RELAY_URL = process.env.RELAY_URL || 'ws://localhost:7100';
 
 /**
  * Calculate latency statistics from samples

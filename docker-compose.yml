@@ -1,9 +1,9 @@
-version: '3.8'
+# Docker Compose for Wasteland POC
 
 services:
   # ILP Connector
   ilp-connector:
-    image: di3twater/crosstown-connector:latest
+    image: connector:latest
     container_name: wasteland-ilp-connector
     ports:
       - "7768:7768"  # ILP connector port
@@ -11,31 +11,30 @@ services:
       - CONNECTOR_STORE=memory
       - CONNECTOR_ACCOUNTS={}
       - CONNECTOR_ILP_ADDRESS=test.connector
+    volumes:
+      - ./connector-config.yaml:/app/config.yaml:ro
     networks:
       - wasteland-net
     restart: unless-stopped
     mem_limit: 512m
     cpus: 1.0
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:7768/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
 
   # Crosstown Relay (ILP-gated Nostr relay)
   relay:
-    image: di3twater/crosstown-relay:latest
+    image: crosstown:optimized
     container_name: wasteland-relay
     ports:
-      - "7001:7001"  # Nostr relay WebSocket port
+      - "7001:7100"  # Nostr relay WebSocket port (relay listens on 7100 internally)
     environment:
+      - NODE_ID=wasteland-relay-node
+      - NOSTR_SECRET_KEY=ed43fb391bd44a32560f93c6669b7695e583de400707b13661302be81d6d90d5
+      - ILP_ADDRESS=test.relay
       - RELAY_NAME=wasteland-relay
       - RELAY_DESCRIPTION=Wasteland POC Nostr Relay
       - ILP_CONNECTOR=http://ilp-connector:7768
       - RELAY_PUBLIC_KEY=${RELAY_PUBLIC_KEY:-}
     depends_on:
-      ilp-connector:
-        condition: service_healthy
+      - ilp-connector
     networks:
       - wasteland-net
     restart: unless-stopped
@@ -52,7 +51,7 @@ services:
     container_name: wasteland-agent-1
     environment:
       - AGENT_NAME=agent-1
-      - RELAY_URL=ws://relay:7001
+      - RELAY_URL=ws://relay:7100
       - POLLING_INTERVAL=5000
       - WORK_DURATION_MIN=2
       - WORK_DURATION_MAX=5
@@ -73,7 +72,7 @@ services:
     container_name: wasteland-agent-2
     environment:
       - AGENT_NAME=agent-2
-      - RELAY_URL=ws://relay:7001
+      - RELAY_URL=ws://relay:7100
       - POLLING_INTERVAL=5000
       - WORK_DURATION_MIN=2
       - WORK_DURATION_MAX=5
@@ -94,7 +93,7 @@ services:
     container_name: wasteland-agent-3
     environment:
       - AGENT_NAME=agent-3
-      - RELAY_URL=ws://relay:7001
+      - RELAY_URL=ws://relay:7100
       - POLLING_INTERVAL=5000
       - WORK_DURATION_MIN=2
       - WORK_DURATION_MAX=5

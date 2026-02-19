@@ -33,7 +33,7 @@ WORKDIR /app
 RUN npm install -g pnpm
 
 # Copy package files
-COPY package.json pnpm-workspace.yaml ./
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY packages/wasteland-client/package.json ./packages/wasteland-client/
 COPY packages/demo-agent/package.json ./packages/demo-agent/
 

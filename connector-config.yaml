@@ -1,0 +1,28 @@
+# Minimal ILP Connector Configuration for Wasteland POC
+nodeId: wasteland-connector
+ilpAddress: test.connector
+
+# HTTP server configuration
+server:
+  port: 7768
+  host: 0.0.0.0
+
+# BTP server configuration
+btpServerPort: 7769
+
+# Minimal accounts configuration
+accounts: []
+
+# Peers configuration (empty for POC)
+peers: []
+
+# Routes configuration (empty for POC)
+routes: []
+
+# Store configuration (in-memory for POC)
+store:
+  type: memory
+
+# Logging
+logging:
+  level: info
