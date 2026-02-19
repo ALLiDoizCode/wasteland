@@ -147,7 +147,11 @@ export class WastelandClient {
    */
   async findReady(authorPubkey?: string): Promise<TaskEvent[]> {
     const ws = this.ensureConnected();
-    return findReadyTasks(ws, authorPubkey || this.publicKey);
+    // If authorPubkey is explicitly '', search all tasks (no author filter)
+    // If undefined, default to this agent's tasks
+    // Otherwise, search for specified author
+    const author = authorPubkey === '' ? undefined : (authorPubkey ?? this.publicKey);
+    return findReadyTasks(ws, author);
   }
 
   /**

@@ -91,7 +91,8 @@ export class TaskWorker {
   private async pollForTasks(): Promise<void> {
     try {
       // Find ready tasks (no blockers, open or in_progress status)
-      const readyTasks = await this.client.findReady();
+      // Pass empty string to search ALL tasks, not just tasks authored by this agent
+      const readyTasks = await this.client.findReady('');
 
       if (readyTasks.length === 0) {
         console.log('No ready tasks found');
