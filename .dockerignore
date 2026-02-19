@@ -1,0 +1,13 @@
+node_modules
+dist
+*.log
+.env
+.DS_Store
+_bmad
+_bmad-output
+.git
+.gitignore
+README.md
+POC-REPORT.md
+*.test.ts
+*.test.js

@@ -1,0 +1,29 @@
+{
+  "name": "wasteland",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Nostr-based distributed task management and agent messaging system",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "clean": "pnpm -r clean"
+  },
+  "keywords": [
+    "nostr",
+    "ilp",
+    "task-management",
+    "agent-messaging",
+    "distributed-systems"
+  ],
+  "author": "Jonathan Green",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "vitest": "^1.6.0"
+  }
+}
